@@ -1,0 +1,21 @@
+server:
+  port: 8761
+
+eureka:
+  server:
+    # enableSelfPreservation设置为false，页面会有以下告警信息
+    # THE SELF PRESERVATION MODE IS TURNED OFF.THIS MAY NOT PROTECT INSTANCE EXPIRY IN CASE OF NETWORK/OTHER PROBLEMS.
+    enableSelfPreservation: true
+    evictionIntervalTimerInMs: 4000
+  instance:
+    hostname: localhost
+    leaseRenewalIntervalInSeconds: 1
+    leaseExpirationDurationInSeconds: 2
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+spring:
+  application:
+    name: eureka-server

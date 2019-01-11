@@ -1,0 +1,66 @@
+server:
+  port: 9002
+
+logging:
+  config: file:config/logback.xml
+
+spring:
+  application:
+    name: service-stream-kafka
+  cloud:
+    stream:
+      bindings:
+        input_bsm:
+          binder: kafka_bsm
+          #指定消费的topic
+          destination: V2X-BSM-TOPIC
+          #可以指定消费组，避免每次生成随机group
+          group: kafka-bsm-group
+          # content-type: application/json
+        input_spat:
+          binder: kafka_spat
+          destination: V2X-SPAT-TOPIC
+          # group: cloud-test2-group1
+      binders:
+        kafka_bsm:
+          type: kafka
+          environment:
+            spring:
+              cloud:
+                stream:
+                  kafka:
+                    binder:
+                      brokers: 10.4.66.227:6667,10.4.66.229:6667,10.4.66.230:6667
+                      zkNodes: 10.4.66.227:2181,10.4.66.227:2181,10.4.66.227:2181
+                      minPartitionCount: 10
+                      autoCreateTopics: true
+                      autoAddPartitions: true
+                      #如果需要传递自定义header信息，需要在此处声明，不然自定义消息头是不会出现在最终消息当中的
+                      #headers: myType
+                      configuration:
+                        auto:
+                          offset:
+                            #可以设置原生kafka属性，比如设置新的消费组从最新的offset开始消费
+                            reset: latest
+                        session:
+                          timeout:
+                            ms: 6000 #有效取值6秒~5分钟 6000~300000，默认值10秒钟 10000
+        kafka_spat:
+          type: kafka
+          environment:
+            spring:
+              cloud:
+                stream:
+                  kafka:
+                    binder:
+                      brokers: 10.4.66.227:6667,10.4.66.229:6667,10.4.66.230:6667
+                      zkNodes: 10.4.66.227:2181,10.4.66.227:2181,10.4.66.227:2181
+                      minPartitionCount: 1
+                      autoCreateTopics: true
+                      autoAddPartitions: true
+hbase:
+  zookeeper:
+    quorum: 10.4.66.227,10.4.66.229,10.4.66.230
+    propertyClientPort: 2181
+    baseZNode: /hbase-unsecure
+

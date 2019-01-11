@@ -1,0 +1,37 @@
+server:
+  port: 8760
+spring:
+  application:
+    name: SpringBootAdmin
+  security:
+    user:
+      name: admin
+      password: 123456
+  boot:
+    admin:
+      ui:
+        title: SpringBootAdmin
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+eureka:
+  instance:
+    metadata-map:
+      user.name: admin
+      user.password: 123456
+    easeRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
+    ip-address: 127.0.0.1
+    prefer-ip-address: true
+    instance-id: ${eureka.instance.ip-address}:${server.port}
+  client:
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+#      defaultZone: http://admin:123456@localhost:8761/eureka/

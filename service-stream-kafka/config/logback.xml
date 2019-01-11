@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- Constants define -->
+    <property name="LOG_HOME" value="logs"></property>
+    <property name="MODULE_NAME" value="V2XSpringBootKafkaHBase"></property>
+    <!-- File define -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${MODULE_NAME}.log</file>
+        <!-- <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/bak/${MODULE_NAME}_%d{yyyyMMdd}.%i.zip</fileNamePattern>
+            <!-- each file should be at most 2GB, keep 5 days worth of history, but at most 1024GB -->
+            <maxFileSize>2GB</maxFileSize>
+            <maxHistory>5</maxHistory>
+            <totalSizeCap>1024GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%logger:%line] --%mdc{client} %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Console define -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <Pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%logger:%line] --%mdc{client} %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <!-- Log root -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+    <!-- Custom level-->
+    <logger name="com.neusoft" level="debug"/>
+
+
+</configuration>

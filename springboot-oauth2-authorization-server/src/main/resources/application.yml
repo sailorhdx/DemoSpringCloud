@@ -1,0 +1,33 @@
+server:
+  port: 8888
+spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+    timeout: 3600s #超时
+    jedis:
+      pool:
+        max-active: 10 #最大活动对象数
+        max-idle: 10 #最大能够保持idel状态的对象数
+        min-idle: 1 #最小能够保持idel状态的对象数
+        max-wait: 10000ms #当池内没有返回对象时，最大等待时间
+        testOnBorrow: true #当调用borrowObject方法时，是否进行有效性检查
+        testOnReturn: true #当调用returnObject方法时，是否进行有效性检查
+        timeBetweenEvictionRunsMillis: 30000 #“空闲链接”检测线程，检测的周期，毫秒数。如果为负值，表示不运行“检测线程”。默认为-1.
+        testWhileIdle: true #向调用者输出“链接”对象时，是否检测它的空闲超时；
+        numTestsPerEvictionRun: 10 #对于“空闲链接”检测线程而言，每次检测的链接资源的个数。默认为3.
+logging:
+  level:
+    org.springframework: info
+merryyou:
+  security:
+    oauth2:
+      storeType: redis #或者jwt
+      jwtSigningKey: merryyou
+      clients[0]:
+        clientId: merryyou
+        clientSecret: merryyou
+      clients[1]:
+        clientId: merryyou1
+        clientSecret: merryyou1
